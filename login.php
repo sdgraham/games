@@ -10,12 +10,12 @@ function authenticateUser($username, $password)
     // Database connection
     $host = "localhost";
     $username = "root";
-    $password = "";
+    $dbpassword = "";
     $db = "gamesdb";
 
 
     global $connection;
-    $connection = new mysqli($host, $username, $password, $db);
+    $connection = new mysqli($host, $username, $dbpassword, $db);
 
     // Check connection
     if ($connection->connect_error) 

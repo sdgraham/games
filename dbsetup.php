@@ -4,10 +4,10 @@
 	// set up the connection to mysql
 	$host = "localhost";
 	$username = "root";
-	$password = "";
+	$dbpassword = "";
 	
 	global $connection;
-	$connection = new mysqli($host, $username, $password); // gets use a connection object to use to access mysql
+	$connection = new mysqli($host, $username, $dbpassword); // gets use a connection object to use to access mysql
 	
 	// check the connection works
 	if ($connection->connect_error)
@@ -77,7 +77,5 @@
 	// close the database Connection
 	$connection->close();
 
-
-	// ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
 ?>
 

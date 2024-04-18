@@ -51,16 +51,4 @@ else
 
 
 
-
-
-    <!--<h2>Login</h2>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label>Username:</label><br>
-        <input type="text" name="username"><br>
-        <label>Password:</label><br>
-        <input type="password" name="password"><br>
-        <input type="submit" value="Login">
-    </form> --?
-    <?php if (isset($login_error)) echo "<p>$login_error</p>"; ?>
-
 </html>

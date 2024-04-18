@@ -7,10 +7,10 @@ include "dbsetup.php";
 // Database connection
 $host = "localhost";
 $username = "root";
-$password = "";
+$dbpassword = "";
 $db = "gamesdb";
 
-$connection = new mysqli($host, $username, $password, $db);
+$connection = new mysqli($host, $username, $dbpassword, $db);
 
 // Check connection
 if ($connection->connect_error) 
@@ -29,12 +29,12 @@ function createUser($username, $password)
     // Database connection
     $host = "localhost";
     $username = "root";
-    $password = "";
+    $dbpassword = "";
     $db = "gamesdb";
 
 
     global $connection;
-    $connection = new mysqli($host, $username, $password, $db);
+    $connection = new mysqli($host, $username, $dbpassword, $db);
 
     // Check connection
     if ($connection->connect_error) 
@@ -67,7 +67,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     // Create user account
     if (createUser($username, $password)) 
     {
-        echo "User account created successfully!";
+        header("Location: login.php");
+        exit();
     } 
     else 
     {
