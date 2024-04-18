@@ -5,7 +5,7 @@ session_start();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login Page</title>
+    <title>Game site home</title>
     <link rel="stylesheet" href="style.css"></link>
 </head>
 
@@ -30,9 +30,21 @@ else
 ?>
     </div>
 
-    <div style="padding-left:16px">
-        <h2>Top Navigation Example</h2>
-        <p>Some content..</p>
+    <div class="container">
+        <h2>Welcome to THE GAME ZONE</h2>
+<?php
+if (!isset($_SESSION['username']))
+{
+    echo("Greetings, guest gamer.");
+}
+else
+{
+    echo("Greetings, logged-in gamer!");
+}
+
+?>
+
+
     </div>
 
 </body>

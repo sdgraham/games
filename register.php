@@ -4,8 +4,27 @@ session_start();
 
 include "dbsetup.php";
 
-// Function to authenticate user
-function authenticateUser($username, $password) 
+// Database connection
+$host = "localhost";
+$username = "root";
+$password = "";
+$db = "gamesdb";
+
+$connection = new mysqli($host, $username, $password, $db);
+
+// Check connection
+if ($connection->connect_error) 
+{
+    die("Connection failed: " . $connection->connect_error);
+}
+
+// Function to hash password
+function hashPassword($password) 
+{
+    return password_hash($password, PASSWORD_DEFAULT);
+}
+
+function createUser($username, $password) 
 {
     // Database connection
     $host = "localhost";
@@ -23,50 +42,37 @@ function authenticateUser($username, $password)
         die("Connection failed: " . $connection->connect_error);
     }
 
-    $stmt = $connection->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $hashed_password = hashPassword($password);
 
-    if ($result->num_rows == 1) 
+    $stmt = $connection->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+    $stmt->bind_param("ss", $username, $hashed_password);
+
+    if ($stmt->execute()) 
     {
-        $user = $result->fetch_assoc();
-
-        if (password_verify($password, $user['password'])) 
-        {
-            return $user;
-        }
+        return true;
+    } 
+    else 
+    {
+        return false;
     }
-
-    return null;
 }
 
-// Login process
+// Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $user = authenticateUser($username, $password);
+    $email = $_POST['email'];
 
-    if ($user) 
+    // Create user account
+    if (createUser($username, $password)) 
     {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
-        header("Location: index.php"); // Redirect to dashboard after successful login
-        exit();
+        echo "User account created successfully!";
     } 
     else 
     {
-        $login_error = "Invalid username or password";
+        echo "Error creating user account.";
     }
-}
-
-// Logout process
-if (isset($_GET['logout'])) 
-{
-    session_destroy();
-    header("Location: login.php");
-    exit();
 }
 
 ?>
@@ -74,7 +80,7 @@ if (isset($_GET['logout']))
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login Page</title>
+    <title>Register an account</title>
     <link rel="stylesheet" href="style.css"></link>
 </head>
 <body>
@@ -102,13 +108,11 @@ else
         <input type="text" name="username"><br>
         <label>Password:</label><br>
         <input type="password" name="password"><br>
-        <input type="submit" value="Login">
+        <label>Email:</label><br>
+        <input type="email" name="email"><br>
+
+        <input type="submit" value="Register">
+
     </form>
-    <div>
-    <h2>No account? <a href="register.php">Register</a></h2>
-    </div>
-    <?php if (isset($login_error)) echo "<p>$login_error</p>"; ?>
 </body>
 </html>
-
-
