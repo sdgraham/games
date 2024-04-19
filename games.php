@@ -90,7 +90,7 @@ else
         echo("<div class='content'>");
         echo("<h3>" . $row['title'] . "</h3>");
         echo("<p>" . $row['description'] ."</p>");
-        echo("<img src='". $row['image_path'] . "' alt='" . $row['description'] ."' style='width:100%'>");
+        echo("<img src='". $row['image_path'] . "' alt='" . $row['description'] ."' class='gameImage'>");
         echo("</div>");
         echo("</div>");
 
