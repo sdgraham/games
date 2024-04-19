@@ -14,8 +14,8 @@ session_start();
     <div class="topnav">
         <a class="active" href="#home">Home</a>
         <a href="#news">News</a>
+        <a href="games.php">Games</a>
         <a href="#contact">Contact</a>
-        <a href="#about">About</a>
 
 <?php
 if (!isset($_SESSION['user_id']))
@@ -39,7 +39,7 @@ if (!isset($_SESSION['username']))
 }
 else
 {
-    echo("Greetings, logged-in gamer!");
+    echo("Greetings, " .  $_SESSION['username']);
 }
 
 ?>

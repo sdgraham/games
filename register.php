@@ -6,11 +6,11 @@ include "dbsetup.php";
 
 // Database connection
 $host = "localhost";
-$username = "root";
+$dbusername = "root";
 $dbpassword = "";
 $db = "gamesdb";
 
-$connection = new mysqli($host, $username, $dbpassword, $db);
+$connection = new mysqli($host, $dbusername, $dbpassword, $db);
 
 // Check connection
 if ($connection->connect_error) 
@@ -24,17 +24,17 @@ function hashPassword($password)
     return password_hash($password, PASSWORD_DEFAULT);
 }
 
-function createUser($username, $password) 
+function createUser($username, $email, $password) 
 {
     // Database connection
     $host = "localhost";
-    $username = "root";
+    $dbusername = "root";
     $dbpassword = "";
     $db = "gamesdb";
 
 
     global $connection;
-    $connection = new mysqli($host, $username, $dbpassword, $db);
+    $connection = new mysqli($host, $dbusername, $dbpassword, $db);
 
     // Check connection
     if ($connection->connect_error) 
@@ -44,8 +44,8 @@ function createUser($username, $password)
 
     $hashed_password = hashPassword($password);
 
-    $stmt = $connection->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-    $stmt->bind_param("ss", $username, $hashed_password);
+    $stmt = $connection->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $username, $email, $hashed_password);
 
     if ($stmt->execute()) 
     {
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $email = $_POST['email'];
 
     // Create user account
-    if (createUser($username, $password)) 
+    if (createUser($username, $email, $password)) 
     {
         header("Location: login.php");
         exit();
@@ -86,15 +86,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 </head>
 <body>
 <div class="topnav">
-        <a class="active" href="#home">Home</a>
+        <a href="index.php">Home</a>
         <a href="#news">News</a>
+        <a href="games.php">Games</a>
         <a href="#contact">Contact</a>
-        <a href="#about">About</a>
 
 <?php
 if (!isset($_SESSION['user_id']))
 {
-    echo("<a href='login.php'>Login</a>");
+    echo("<a class="active" href='login.php'>Login</a>");
 }
 else
 {

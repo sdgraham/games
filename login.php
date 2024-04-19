@@ -9,13 +9,13 @@ function authenticateUser($username, $password)
 {
     // Database connection
     $host = "localhost";
-    $username = "root";
+    $dbusername = "root";
     $dbpassword = "";
     $db = "gamesdb";
 
 
     global $connection;
-    $connection = new mysqli($host, $username, $dbpassword, $db);
+    $connection = new mysqli($host, $dbusername, $dbpassword, $db);
 
     // Check connection
     if ($connection->connect_error) 
@@ -52,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
+        $_SESSION["upload_error"] = false;
         header("Location: index.php"); // Redirect to dashboard after successful login
         exit();
     } 
@@ -79,15 +80,15 @@ if (isset($_GET['logout']))
 </head>
 <body>
 <div class="topnav">
-        <a class="active" href="#home">Home</a>
+        <a href="index.php">Home</a>
         <a href="#news">News</a>
+        <a href="games.php">Games</a>
         <a href="#contact">Contact</a>
-        <a href="#about">About</a>
 
 <?php
 if (!isset($_SESSION['user_id']))
 {
-    echo("<a href='login.php'>Login</a>");
+    echo("<a class='active' href='login.php'>Login</a>");
 }
 else
 {
